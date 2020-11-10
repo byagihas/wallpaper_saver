@@ -1,3 +1,8 @@
+.jpg
+.png
+Dockerfile
+package-lock.json
+
 # Logs
 logs
 *.log
