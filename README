@@ -1,7 +1,6 @@
+## Scripts to automate retrieving top wallpaper posts from r/wallpapers
 
-## Available Scripts
-
-Run to get access token in token.json after setting parameters in a .env file:
+You'll need to get a token from token.json after setting reddit Auth parameters in a .env file:
 
 REDDIT_API_SECRET=
 REDDIT_API_CLIENT=
@@ -9,7 +8,7 @@ REDDIT_REDIRECT_URI=
 REDDIT_USER=
 REDDIT_PASS=
 
-npm install
-npm start
+Then run:
 
+node index.js
 
