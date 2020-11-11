@@ -2,6 +2,7 @@
 .png
 Dockerfile
 package-lock.json
+token.json
 
 # Logs
 logs

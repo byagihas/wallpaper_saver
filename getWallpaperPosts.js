@@ -19,13 +19,13 @@ let req_headers = {
 // Function: getWallpapers()
 // Retrieve wallpapers from r/wallpapers
 // parameters: subreddit - subreddit to search for recipes
-const getWallpapers = () => {
-    let limit = '1';
+const getWallpapers = (subreddit, postamount) => {
+    let limit = postamount;
     let sorttype = 'top';
-    let timeinterval = 'day';
-    let reddit_api_url = `https://reddit.com/r/wallpapers.json?limit=${limit}&sort=${sorttype}&t=${timeinterval}`;
+    let timeinterval = 'd';
+    let reddit_api_url = `https://reddit.com/r/${subreddit}.json?limit=${limit}&sort=${sorttype}&t=${timeinterval}`;
     let wallpapers = [];
-    var image_url;
+    let image_url = [];
     return request_promise({
         uri: reddit_api_url,
         headers: req_headers,
@@ -39,7 +39,7 @@ const getWallpapers = () => {
     }).then(() => {
         fs.writeFileSync(__dirname + '/wallpapers.json', JSON.stringify(wallpapers));
         console.log('File written to:' + __dirname + '/wallpapers.json');
-        return true;
+        return wallpapers;
     });
 };
 

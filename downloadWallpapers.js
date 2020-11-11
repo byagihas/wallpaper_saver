@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const request = require('request');
-const wallpapers = require('./wallpapers.json');
 
 let ISODate = new Date().toISOString();
 let downloadDate = ISODate.substring(0,ISODate.indexOf('T'));
@@ -19,30 +18,36 @@ let req_headers = {
 
 // Function: getWallpapers()
 // Retrieve wallpapers from r/wallpapers
-// parameters: subreddit - subreddit to search for recipes
-const downloadWallpapers = async () => {
-    let outfile = fs.createWriteStream(`rddt_topwp_${downloadDate}.jpg`);
-    await new Promise((resolve, reject) => {
-        request({
-            uri: wallpapers[0],
-            headers: req_headers,
-            method: 'GET',
-            gzip : 'true'
+// parameters: wallpapers - Array containing links to download .jpegs of wallpapers
+const downloadWallpapers = async (wallpapers) => {
+    if(wallpapers.length < 1){
+        return 'No wallpapers in object';
+    };
+    for(let i=0;i<wallpapers.length;i++){
+        let extension = 'jpg';
+        await new Promise((resolve, reject) => {
+            let outfile = fs.createWriteStream(`rddt_topwp_${downloadDate}_${i}.${extension}`);
+            request({
+                uri: wallpapers[i],
+                headers: req_headers,
+                method: 'GET',
+                gzip : 'true'
+            })
+            .pipe(outfile)
+            .on('finish', () => {
+                console.log(`File downloaded.`);
+                resolve();
+            })
+            .on('error',(error) => {
+                let err = new Error(error);
+                reject(err);
+            });
         })
-        .pipe(outfile)
-        .on('finish', () => {
-            console.log(`File downloaded.`);
-            resolve();
-        })
-        .on('error',(error) => {
+        .catch(error => {
             let err = new Error(error);
-            reject(err);
+            console.log(`Error: ${err}`);
         });
-    })
-    .catch(error => {
-        let err = new Error(error);
-        console.log(`Error: ${err}`);
-    });
+    };
 };
 // getting wallpapers from r/wallpapers
 module.exports = downloadWallpapers;

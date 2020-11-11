@@ -3,10 +3,11 @@
 const getPosts = require('./getWallpaperPosts.js');
 const downloadWallpaper = require('./downloadWallpapers.js');
 
-const main = async () => {
+const main = () => {
     const driver = async () => {
-        let p = await getPosts();
-        let d = await downloadWallpaper();
+        // get 10 images from r/wallpapers
+        let p = await getPosts('wallpapers', 20);
+        let d = await downloadWallpaper(p);
         if(p) {
             return d;
         }
